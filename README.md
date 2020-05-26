@@ -1,5 +1,5 @@
 # Socialblade.com unofficial APIs
-![Node.js CI](https://github.com/DavideViolante/socialblade-com-api/workflows/Node.js%20CI/badge.svg) [![Donate](https://img.shields.io/badge/paypal-donate-179BD7.svg)](https://www.paypal.me/dviolante)
+![Node.js CI](https://github.com/DavideViolante/socialblade-com-api/workflows/Node.js%20CI/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/5cf562601140598e1f8a/maintainability)](https://codeclimate.com/github/DavideViolante/socialblade-com-api/maintainability) [![Donate](https://img.shields.io/badge/paypal-donate-179BD7.svg)](https://www.paypal.me/dviolante)
 
 ### Install
 `npm i socialblade-com-api`

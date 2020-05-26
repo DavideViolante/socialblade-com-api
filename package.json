@@ -1,7 +1,7 @@
 {
-  "name": "socialblade-scraper",
-  "version": "1.0.0",
-  "description": "Socialblade.com scraper.",
+  "name": "socialblade-com-api",
+  "version": "1.0.1",
+  "description": "Unofficial APIs for Socialblade.com website.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./",
