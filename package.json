@@ -17,7 +17,8 @@
     "socialmedia",
     "scraper",
     "scraping",
-    "crawler"
+    "crawler",
+    "api"
   ],
   "author": "Davide Violante",
   "license": "MIT",

@@ -30,7 +30,7 @@ function convertArrayToObject (arrays) {
   return arrays.map(array => {
     const [date, followersDelta, followers, followingDelta, following, postsDelta, posts] = array
     return {
-      date,
+      date: date.replace(/-/g, '/'),
       followersDelta: +followersDelta || 0,
       followers: +followers || 0,
       followingDelta: +followingDelta || 0,
@@ -41,8 +41,8 @@ function convertArrayToObject (arrays) {
   })
 }
 
-async function socialblade () {
-  const html = await axios('https://socialblade.com/twitter/user/barackobama/monthly')
+async function socialblade (username) {
+  const html = await axios(`https://socialblade.com/twitter/user/${username}/monthly`)
   const $ = cheerio.load(html.data)
   const table = $('#socialblade-user-content > div:nth-child(5)').text()
   const tableRows = cleanRows(table.split('\n'))
