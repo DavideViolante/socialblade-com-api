@@ -1,4 +1,4 @@
-# Socialblade Scraper
+# Socialblade.com unofficial APIs
 ![Node.js CI](https://github.com/DavideViolante/socialblade-com-api/workflows/Node.js%20CI/badge.svg) [![Donate](https://img.shields.io/badge/paypal-donate-179BD7.svg)](https://www.paypal.me/dviolante)
 
 ### Install
