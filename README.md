@@ -1,2 +1,2 @@
-# socialblade-scraper
-Scrape data from Socialblade.com
+# Socialblade Scraper
+Scrape Socialblade.com data
