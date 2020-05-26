@@ -50,7 +50,7 @@ async function socialblade (username) {
   let arrays = createArrayOfArrays(tableRows.length / itemsPerRow)
   arrays = fillArray(arrays, tableRows)
   const array2obj = convertArrayToObject(arrays)
-  console.log(array2obj)
+  return array2obj
 }
 
 exports.socialblade = socialblade

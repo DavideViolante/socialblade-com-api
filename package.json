@@ -1,6 +1,6 @@
 {
   "name": "socialblade-com-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Unofficial APIs for Socialblade.com website.",
   "main": "index.js",
   "scripts": {
