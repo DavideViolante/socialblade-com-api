@@ -1,21 +1,18 @@
-require('dotenv').config()
-
 const axios = require('axios')
 const cheerio = require('cheerio')
 
-const { PROXY } = process.env
 const { cleanRows, createArrayOfArrays, fillArray, convertArrayToObject } = require('./functions')
 
-function callSocialblade (username, useProxy) {
+function callSocialblade (username, config) {
   return axios({
     method: 'GET',
-    url: `${useProxy ? PROXY : ''}http://socialblade.com/twitter/user/${username}/monthly`
+    url: `${config ? `${config.url}?key=${config.key}&url=` : ''}http://socialblade.com/twitter/user/${username}/monthly`
   })
 }
 
-async function socialblade (username, useProxy) {
+async function socialblade (username, config) {
   try {
-    const html = await callSocialblade(username, useProxy)
+    const html = await callSocialblade(username, config)
     const $ = cheerio.load(html.data)
     const table = $('#socialblade-user-content > div:nth-child(5)').text()
     const tableRows = cleanRows(table.split('\n'))
