@@ -15,5 +15,9 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "quote-props": [
+            "error",
+            "consistent-as-needed"
+        ]
     }
 }
