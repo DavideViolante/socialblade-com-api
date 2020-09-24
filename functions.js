@@ -1,3 +1,9 @@
+const validSources = ['twitter', 'instagram'/*, 'facebook', 'youtube' */]
+
+function isValidSource (source) {
+  return validSources.includes(source)
+}
+
 function cleanRows (rows) {
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   return rows
@@ -39,6 +45,8 @@ function convertArrayToObject (arrays) {
 }
 
 module.exports = {
+  validSources,
+  isValidSource,
   cleanRows,
   createArrayOfArrays,
   fillArray,
