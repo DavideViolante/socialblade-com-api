@@ -30,10 +30,11 @@ async function socialblade (urlPrefix, source, username) {
     const $ = cheerio.load(html.data)
     const table = $('#socialblade-user-content > div:nth-child(5)').text()
     const tableRows = cleanRows(table.split('\n'))
-    const itemsPerRow = source === 'facebook' ? 5 : 7
+    const itemsPerRowCriteria = { facebook: 5, youtube: 6 }
+    const itemsPerRow = itemsPerRowCriteria[source] || 7
     let arrays = createArrayOfArrays(tableRows.length / itemsPerRow)
     arrays = fillArray(arrays, tableRows, itemsPerRow)
-    const array2obj = convertArrayToObject(arrays)
+    const array2obj = convertArrayToObject(source, arrays)
     return array2obj
   } catch (err) {
     console.log(err.response ? err.response.data : err)

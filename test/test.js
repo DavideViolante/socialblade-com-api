@@ -59,7 +59,7 @@ describe('Tests for socialblade-com-api', () => {
   })
 
   it('should convert an array to object', () => {
-    const convertedArray = convertArrayToObject(mockFilledArray)
+    const convertedArray = convertArrayToObject('twitter', mockFilledArray)
     assert.strictEqual(convertedArray.length, 3)
     assert.strictEqual(convertedArray[0].date, '2020/04/27')
     assert.strictEqual(convertedArray[0].followersDelta, 0)

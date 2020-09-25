@@ -1,4 +1,4 @@
-const validSources = ['twitter', 'instagram', 'facebook'/*, 'youtube' */]
+const validSources = ['twitter', 'instagram', 'facebook'/* , 'youtube' */]
 
 function isValidSource (source) {
   return validSources.includes(source)
@@ -35,30 +35,47 @@ function fillArray (arrays, tableRows, itemsPerRow) {
   return arrays
 }
 
-function convertArrayToObject (arrays) {
+function convertArrayToObject (source, arrays) {
   return arrays.map(array => {
-    if (array.length === 5) { // Facebook
-      const [date, likesDelta, likes, talkingAboutDelta, talkingAbout] = array
-      return {
-        date: date.replace(/-/g, '/'),
-        likesDelta: +likesDelta || 0,
-        likes: +likes || 0,
-        talkingAboutDelta: +talkingAboutDelta || 0,
-        talkingAbout: +talkingAbout || 0
-      }
-    } else {
-      const [date, followersDelta, followers, followingDelta, following, postsDelta, posts] = array
-      return {
-        date: date.replace(/-/g, '/'),
-        followersDelta: +followersDelta || 0,
-        followers: +followers || 0,
-        followingDelta: +followingDelta || 0,
-        following: +following || 0,
-        postsDelta: +postsDelta || 0,
-        posts: +posts || 0
-      }
+    const [col1, col2, col3, col4, col5, col6, col7] = array
+    switch (source) {
+      case 'twitter':
+      case 'instagram':
+        return {
+          date: dateDashToSlash(col1),
+          followersDelta: +col2 || 0,
+          followers: +col3 || 0,
+          followingDelta: +col4 || 0,
+          following: +col5 || 0,
+          postsDelta: +col6 || 0,
+          posts: +col7 || 0
+        }
+      case 'facebook':
+        return {
+          date: dateDashToSlash(col1),
+          likesDelta: +col2 || 0,
+          likes: +col3 || 0,
+          talkingAboutDelta: +col4 || 0,
+          talkingAbout: +col5 || 0
+        }
+      case 'youtube':
+        return {
+          date: dateDashToSlash(col1),
+          subscribersDelta: +(convertUnit(col2)) || 0,
+          subscribers: +(convertUnit(col3)) || 0,
+          viewsDelta: +col4 || 0,
+          views: +col5 || 0
+        }
     }
   })
+}
+
+function convertUnit (str) {
+  return str.replace('K', '000').replace('M', '000000')
+}
+
+function dateDashToSlash (str) {
+  return str.replace(/-/g, '/')
 }
 
 module.exports = {
