@@ -10,6 +10,8 @@ const {
   validSources
 } = require('./functions')
 
+let retries = 2
+
 function callSocialblade (urlPrefix, source, username) {
   return axios({
     method: 'GET',
@@ -32,7 +34,14 @@ async function socialblade (urlPrefix, source, username) {
     const array2obj = convertArrayToObject(arrays)
     return array2obj
   } catch (err) {
-    console.log(err.response.data)
+    console.log(err.response ? err.response.data : err)
+    if (retries > 0) {
+      retries--
+      console.log('Failed once, retrying...')
+      return socialblade(urlPrefix, source, username)
+    } else {
+      console.log('Request failed too many times, aborting.')
+    }
   }
 }
 
