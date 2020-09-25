@@ -6,16 +6,17 @@ const {
   createArrayOfArrays,
   convertArrayToObject,
   fillArray,
+  generateUrl,
   isValidSource,
   validSources
 } = require('./functions')
 
 let retries = 2
 
-function callSocialblade (urlPrefix, source, username) {
+function callSocialblade (url) {
   return axios({
     method: 'GET',
-    url: `${urlPrefix}https://socialblade.com/${source}/user/${username}/monthly`
+    url
   })
 }
 
@@ -24,11 +25,12 @@ async function socialblade (urlPrefix, source, username) {
     if (!isValidSource(source)) {
       throw Error(`Invalid source. Valid sources are: ${validSources.join(', ')}`)
     }
-    const html = await callSocialblade(urlPrefix, source, username)
+    const url = generateUrl(urlPrefix, source, username)
+    const html = await callSocialblade(url)
     const $ = cheerio.load(html.data)
     const table = $('#socialblade-user-content > div:nth-child(5)').text()
     const tableRows = cleanRows(table.split('\n'))
-    const itemsPerRow = 7
+    const itemsPerRow = source === 'facebook' ? 5 : 7
     let arrays = createArrayOfArrays(tableRows.length / itemsPerRow)
     arrays = fillArray(arrays, tableRows, itemsPerRow)
     const array2obj = convertArrayToObject(arrays)

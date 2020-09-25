@@ -1,5 +1,5 @@
 const assert = require('assert')
-const { cleanRows, createArrayOfArrays, fillArray, convertArrayToObject } = require('../functions')
+const { cleanRows, convertArrayToObject, createArrayOfArrays, fillArray, generateUrl } = require('../functions')
 
 const mockArrayToClean = [
   '', '    ', '\t', '\t    ', '            2020-04-27',
@@ -18,6 +18,13 @@ const mockFilledArray = [
 ]
 
 describe('Tests for socialblade-com-api', () => {
+  it('should generate the url', () => {
+    const url1 = generateUrl('prefix', 'twitter', 'barackobama')
+    const url2 = generateUrl('prefix', 'facebook', 'barackobama')
+    assert.strictEqual(url1, 'prefixhttps://socialblade.com/twitter/user/barackobama/monthly')
+    assert.strictEqual(url2, 'prefixhttps://socialblade.com/facebook/page/barackobama')
+  })
+
   it('should clean an array from unwanted chars', () => {
     const cleanedArray = cleanRows(mockArrayToClean)
     assert.strictEqual(cleanedArray.length, 3)
