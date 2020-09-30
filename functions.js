@@ -1,3 +1,6 @@
+
+const cheerio = require('cheerio')
+
 const validSources = ['twitter', 'instagram', 'facebook'/* , 'youtube' */]
 
 function isValidSource (source) {
@@ -10,11 +13,28 @@ function generateUrl (urlPrefix, source, username) {
   return `${urlPrefix}https://socialblade.com/${source}/${userUrl}/${username}${urlSuffix}`
 }
 
-function cleanRows (rows) {
+function getOutput (data, source) {
+  const $ = cheerio.load(data)
+  // Table for Twitter, Instagram, Facebook
+  const table = $('#socialblade-user-content > div:nth-child(5)').text().split('\n')
+  // Charts for Twitter, Instagram
+  let charts = []
+  if (source !== 'facebook') {
+    charts = $('script').contents().get(4).data.split('\n')
+  }
+  return { table, charts }
+}
+
+function cleanRows (table, charts) {
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  return rows
-    .map(row => row.replace(new RegExp(/(\t|\s|,|\+)+/, 'g'), ''))
+  const tableRows = table
+    .map(row => row.replace(/(\t|\s|,|\+)+/g, ''))
     .filter(row => row && !days.includes(row))
+  const chartsRows = charts
+    .filter(item => /^title: { text|^series:/g.test(item.trim()))
+    .map(item => item.trim().replace(/title: { text: |'|\\| },|series: | }],/g, ''))
+    .map(item => item.includes('[{ name:') ? item.split('data: ')[1] : item)
+  return { tableRows, chartsRows }
 }
 
 function createArrayOfArrays (n) {
@@ -38,11 +58,12 @@ function fillArray (arrays, tableRows, itemsPerRow) {
 function convertArrayToObject (source, arrays) {
   return arrays.map(array => {
     const [col1, col2, col3, col4, col5, col6, col7] = array
+    let parsed
     switch (source) {
       case 'twitter':
       case 'instagram':
         return {
-          date: dateDashToSlash(col1),
+          date: new Date(col1).toLocaleDateString('en-GB'),
           followersDelta: +col2 || 0,
           followers: +col3 || 0,
           followingDelta: +col4 || 0,
@@ -52,7 +73,7 @@ function convertArrayToObject (source, arrays) {
         }
       case 'facebook':
         return {
-          date: dateDashToSlash(col1),
+          date: new Date(col1).toLocaleDateString('en-GB'),
           likesDelta: +col2 || 0,
           likes: +col3 || 0,
           talkingAboutDelta: +col4 || 0,
@@ -60,28 +81,41 @@ function convertArrayToObject (source, arrays) {
         }
       case 'youtube':
         return {
-          date: dateDashToSlash(col1),
+          date: new Date(col1).toLocaleDateString('en-GB'),
           subscribersDelta: +(convertUnit(col2)) || 0,
           subscribers: +(convertUnit(col3)) || 0,
           viewsDelta: +col4 || 0,
           views: +col5 || 0
         }
+      case 'charts':
+        parsed = JSON.parse(col2)
+        // [[Timestamp, Number], [...], ...]
+        parsed = parsed.map(item => ({ date: new Date(item[0]).toLocaleDateString('en-GB'), value: item[1] }))
+        return {
+          id: generateId(col1),
+          title: col1,
+          data: parsed
+        }
     }
   })
+}
+
+function generateId (str) {
+  const splitted = str.split(/ for |\(/)
+  return `${splitted[2] || ''.slice(0, -1)}${splitted[0]}`
+    .toLowerCase()
+    .replace(/\s|\)/g, '-')
 }
 
 function convertUnit (str) {
   return str.replace('K', '000').replace('M', '000000')
 }
 
-function dateDashToSlash (str) {
-  return str.replace(/-/g, '/')
-}
-
 module.exports = {
   validSources,
   generateUrl,
   isValidSource,
+  getOutput,
   cleanRows,
   createArrayOfArrays,
   fillArray,

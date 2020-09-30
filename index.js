@@ -1,7 +1,7 @@
 const axios = require('axios')
-const cheerio = require('cheerio')
 
 const {
+  getOutput,
   cleanRows,
   createArrayOfArrays,
   convertArrayToObject,
@@ -14,10 +14,7 @@ const {
 let retries = 2
 
 function callSocialblade (url) {
-  return axios({
-    method: 'GET',
-    url
-  })
+  return axios.get(url)
 }
 
 async function socialblade (urlPrefix, source, username) {
@@ -27,15 +24,16 @@ async function socialblade (urlPrefix, source, username) {
     }
     const url = generateUrl(urlPrefix, source, username)
     const html = await callSocialblade(url)
-    const $ = cheerio.load(html.data)
-    const table = $('#socialblade-user-content > div:nth-child(5)').text()
-    const tableRows = cleanRows(table.split('\n'))
-    const itemsPerRowCriteria = { facebook: 5, youtube: 6 }
-    const itemsPerRow = itemsPerRowCriteria[source] || 7
-    let arrays = createArrayOfArrays(tableRows.length / itemsPerRow)
-    arrays = fillArray(arrays, tableRows, itemsPerRow)
-    const array2obj = convertArrayToObject(source, arrays)
-    return array2obj
+    const { table, charts } = getOutput(html.data, source)
+    const { tableRows, chartsRows } = cleanRows(table, charts)
+    const itemsPerRow = { twitter: 7, instagram: 7, facebook: 5, youtube: 6 }
+    let tableArrays = createArrayOfArrays(tableRows.length / itemsPerRow[source])
+    tableArrays = fillArray(tableArrays, tableRows, itemsPerRow[source])
+    const tableArrayOfObjects = convertArrayToObject(source, tableArrays)
+    let chartsArrays = createArrayOfArrays(chartsRows.length / 2)
+    chartsArrays = fillArray(chartsArrays, chartsRows, 2)
+    const chartsArrayOfObjects = convertArrayToObject('charts', chartsArrays)
+    return { table: tableArrayOfObjects, charts: chartsArrayOfObjects }
   } catch (err) {
     console.log(err.response ? err.response.data : err)
     if (retries > 0) {
