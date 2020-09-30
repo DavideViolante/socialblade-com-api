@@ -17,21 +17,31 @@ const { socialblade } = require('socialblade-com-api')
 
 async function main () {
   const response = await socialblade('http://api.scraperapi.com?api_key=<YOUR_API_KEY>&url=', 'twitter', 'barackobama')
-  /**
-   * response = 
-   * [
-   *   {
-   *     date: '2020/05/26',
-   *     followersDelta: 5657,
-   *     followers: 117937431,
-   *     followingDelta: -7,
-   *     following: 605960,
-   *     postsDelta: 0,
-   *     posts: 15811
-   *   },
-   *   ...
-   * ]
-   */
+}
+```
+
+### Example response
+```js
+{
+  table: [
+    {
+      date: '2020/05/26',
+      followersDelta: 5657,
+      followers: 117937431,
+      followingDelta: -7,
+      following: 605960,
+      postsDelta: 0,
+      posts: 15811
+    },
+    ...
+  ],
+  charts: [
+    {
+      id: 'weekly-followers-gained',
+      title: 'Weekly Followers Gained for ...',
+      data: [ { date: '2020/05/26', value: 123 }, ... ]
+    }
+  ]
 }
 ```
 
