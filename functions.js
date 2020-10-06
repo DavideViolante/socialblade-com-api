@@ -63,7 +63,7 @@ function convertArrayToObject (source, arrays) {
       case 'twitter':
       case 'instagram':
         return {
-          date: new Date(col1).toLocaleDateString('en-GB'),
+          date: getDate(col1),
           followersDelta: +col2 || 0,
           followers: +col3 || 0,
           followingDelta: +col4 || 0,
@@ -73,7 +73,7 @@ function convertArrayToObject (source, arrays) {
         }
       case 'facebook':
         return {
-          date: new Date(col1).toLocaleDateString('en-GB'),
+          date: getDate(col1),
           likesDelta: +col2 || 0,
           likes: +col3 || 0,
           talkingAboutDelta: +col4 || 0,
@@ -81,7 +81,7 @@ function convertArrayToObject (source, arrays) {
         }
       case 'youtube':
         return {
-          date: new Date(col1).toLocaleDateString('en-GB'),
+          date: getDate(col1),
           subscribersDelta: +(convertUnit(col2)) || 0,
           subscribers: +(convertUnit(col3)) || 0,
           viewsDelta: +col4 || 0,
@@ -90,7 +90,7 @@ function convertArrayToObject (source, arrays) {
       case 'charts':
         parsed = JSON.parse(col2)
         // [[Timestamp, Number], [...], ...]
-        parsed = parsed.map(item => ({ date: new Date(item[0]).toLocaleDateString('en-GB'), value: item[1] }))
+        parsed = parsed.map(item => ({ date: getDate(item[0]), value: item[1] }))
         return {
           id: generateId(col1),
           title: col1,
@@ -98,6 +98,10 @@ function convertArrayToObject (source, arrays) {
         }
     }
   })
+}
+
+function getDate (str) {
+  return new Date(str).toISOString().split('T')[0].replace(/-/g, '/')
 }
 
 function generateId (str) {
