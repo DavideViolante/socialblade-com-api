@@ -1,7 +1,7 @@
 
 const cheerio = require('cheerio')
 
-const validSources = ['twitter', 'instagram', 'facebook'/* , 'youtube' */]
+const validSources = ['twitter', 'instagram', 'facebook', 'youtube']
 
 function isValidSource (source) {
   return validSources.includes(source)
@@ -15,9 +15,12 @@ function generateUrl (urlPrefix, source, username) {
 
 function getOutput (data, source) {
   const $ = cheerio.load(data)
-  // Table for Twitter, Instagram, Facebook
-  const table = $('#socialblade-user-content > div:nth-child(5)').text().split('\n')
-  // Charts for Twitter, Instagram
+  // Table for Twitter, Instagram, Facebook, Youtube
+  let table = $('#socialblade-user-content > div:nth-child(5)').text().split('\n')
+  if (source === 'youtube') {
+    table = $('#socialblade-user-content').text().split(/\s+ESTIMATED EARNINGS\n/)[1].split(/\s+Daily Averages /)[0].split('\n')
+  }
+  // Charts for Twitter, Instagram, Youtube
   let charts = []
   if (source !== 'facebook') {
     charts = $('script').contents().get(4).data.split('\n')
