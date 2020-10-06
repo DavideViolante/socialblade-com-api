@@ -8,7 +8,7 @@ Unofficial APIs for Socialblade.com website. The `socialblade` function returns 
 
 ### Params of `socialblade` function
 1. `urlprefix`: Socialblade website is protected by Cloudflare, I use Scraperapi.com as prefix to bypass the blocks.
-2. `source`: [one of the followings](https://github.com/DavideViolante/socialblade-com-api/blob/master/functions.js#L1-L1).
+2. `source`: [one of the followings](https://github.com/DavideViolante/socialblade-com-api/blob/master/functions.js#L4).
 3. `username`: username on the specified source.
 
 ### Example
