@@ -8,8 +8,11 @@ function isValidSource (source) {
 }
 
 function generateUrl (urlPrefix, source, username) {
-  let userUrl = source === 'facebook' ? 'page' : 'user'
-  userUrl = source === 'youtube' ? 'channel' : 'user'
+  const userUrlCriteria = {
+    facebook: 'page',
+    youtube: 'channel'
+  }
+  const userUrl = userUrlCriteria[source] || 'user'
   const urlSuffix = source === 'facebook' ? '' : '/monthly'
   return `${urlPrefix}https://socialblade.com/${source}/${userUrl}/${username}${urlSuffix}`
 }
