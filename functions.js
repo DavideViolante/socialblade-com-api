@@ -95,6 +95,7 @@ function convertArrayToObject (source, arrays) {
           views: +col5 || 0
         }
       case 'charts':
+      default:
         parsed = JSON.parse(col2)
         // [[Timestamp, Number], [...], ...]
         parsed = parsed.map(item => ({ date: getDate(item[0]), value: item[1] }))
