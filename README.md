@@ -16,7 +16,11 @@ Unofficial APIs for Socialblade.com website. The `socialblade` function returns 
 const { socialblade } = require('socialblade-com-api')
 
 async function main () {
-  const response = await socialblade('http://api.scraperapi.com?api_key=<YOUR_API_KEY>&url=', 'twitter', 'barackobama')
+  try {
+    const response = await socialblade('http://api.scraperapi.com?api_key=<YOUR_API_KEY>&url=', 'twitter', 'barackobama')
+  } catch (err) {
+    console.error(err)
+  }
 }
 ```
 
