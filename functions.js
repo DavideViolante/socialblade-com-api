@@ -98,7 +98,7 @@ function convertArrayToObject (source, arrays) {
       default:
         parsed = JSON.parse(col2)
         // [[Timestamp, Number], [...], ...]
-        parsed = parsed.map(item => ({ date: getDate(item[0]), value: item[1] }))
+        parsed = (parsed || []).map(item => ({ date: getDate(item[0]), value: item[1] }))
         return {
           id: generateId(col1),
           title: col1,
