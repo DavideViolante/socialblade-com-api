@@ -3,6 +3,8 @@
 
 Unofficial APIs for Socialblade.com website. The `socialblade` function returns the last 30 days data of a username for a particular source. See example below.
 
+## Note: since 08/2021 this repo is not working anymore. See [#41](https://github.com/DavideViolante/socialblade-com-api/issues/41).
+
 ### Install
 `npm i socialblade-com-api`
 
