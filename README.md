@@ -3,15 +3,12 @@
 
 Unofficial APIs for Socialblade.com website. The `socialblade` function returns the last 30 days data of a username for a particular source. See example below.
 
-## Note: since 08/2021 this repo is not working anymore. See [#41](https://github.com/DavideViolante/socialblade-com-api/issues/41).
-
 ### Install
 `npm i socialblade-com-api`
 
 ### Params of `socialblade` function
-1. `urlprefix`: Socialblade website is protected by Cloudflare, I use Scraperapi.com as prefix to bypass the blocks.
-2. `source`: [one of the followings](https://github.com/DavideViolante/socialblade-com-api/blob/master/functions.js#L4).
-3. `username`: username on the specified source.
+1. `source`: [one of the followings](https://github.com/DavideViolante/socialblade-com-api/blob/master/functions.js#L4).
+2. `username`: username on the specified source.
 
 ### Example
 ```js
@@ -19,7 +16,7 @@ const { socialblade } = require('socialblade-com-api')
 
 async function main () {
   try {
-    const response = await socialblade('http://api.scraperapi.com?api_key=<YOUR_API_KEY>&url=', 'twitter', 'barackobama')
+    const response = await socialblade('twitter', 'barackobama')
   } catch (err) {
     console.error(err)
   }
