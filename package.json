@@ -1,6 +1,6 @@
 {
   "name": "socialblade-com-api",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Unofficial APIs for Socialblade.com website.",
   "main": "index.js",
   "scripts": {
@@ -34,10 +34,10 @@
   "homepage": "https://github.com/DavideViolante/socialblade-scraper#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "puppeteer": "^21.1.1"
+    "puppeteer": "^21.3.4"
   },
   "devDependencies": {
-    "eslint": "^8.23.1",
+    "eslint": "^8.50.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.0.0"
   }
