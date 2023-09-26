@@ -147,9 +147,18 @@ function generateId(str) {
       .replace(/\s|\)/g, '-');
 }
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * Convert a string unit such as 34.1M to 34100000
+ * @param {string} str String unit to convert correctly
+ * @return {string} converted string
+ */
 function convertUnit(str) {
-  return str.replace('K', '000').replace('M', '000000');
+  const finalStr = str
+      .replace('LIVE', '')
+      .replace(/\./g, '')
+      .replace('K', '000')
+      .replace('M', '000000');
+  return str.includes('.') ? finalStr.slice(0, -1) : finalStr;
 }
 
 module.exports = {
