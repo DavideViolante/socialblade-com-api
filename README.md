@@ -8,7 +8,8 @@ Unofficial APIs for Socialblade.com website. The `socialblade` function returns 
 
 ### Params of `socialblade` function
 1. `source`: [one of the followings](https://github.com/DavideViolante/socialblade-com-api/blob/master/functions.js#L4).
-2. `username`: username on the specified source.
+2. `username`: account username on the specified source.
+3. `cookie`: required param if `source` is `instagram`. You need to sign up for a free account to socialblade.com, then get the value of `PHPSESSXX` Cookie from Chrome console (F12) > Application > Cookies.
 
 ### Example
 ```js
@@ -16,7 +17,8 @@ const { socialblade } = require('socialblade-com-api')
 
 async function main () {
   try {
-    const response = await socialblade('twitter', 'barackobama')
+    const response1 = await socialblade('twitter', 'barackobama')
+    const response2 = await socialblade('instagram', 'barackobama', '<your_socialblade_phpsessxx_cookie>')
   } catch (err) {
     console.error(err)
   }
