@@ -1,7 +1,7 @@
 
 const cheerio = require('cheerio');
 
-const validSources = ['twitter', 'instagram', 'facebook', 'youtube'];
+const validSources = ['twitter', 'instagram', 'facebook', 'youtube', 'tiktok'];
 
 /**
  * Check if the source is valid
@@ -39,8 +39,10 @@ function getOutput(data, source) {
   // Table for Twitter, Instagram, Facebook, Youtube
   let table = $('#socialblade-user-content > div:nth-child(5)').text().split('\n');
   if (source === 'youtube') {
-    // eslint-disable-next-line max-len
-    table = $('#socialblade-user-content').text().split(/\s+ESTIMATED EARNINGS\n/)[1].split(/\s+Daily Averages /)[0].split('\n');
+    table = $('#socialblade-user-content').text()
+      .split(/\s+ESTIMATED EARNINGS\n/)[1]
+      .split(/\s+Daily Averages /)[0]
+      .split('\n');
   }
   // Charts for Twitter, Instagram, Youtube
   let charts = [];
@@ -54,12 +56,12 @@ function getOutput(data, source) {
 function cleanRows(table, charts) {
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const tableRows = table
-      .map((row) => row.replace(/(\t|\s|,|\+)+/g, ''))
-      .filter((row) => row && !days.includes(row));
+    .map((row) => row.replace(/(\t|\s|,|\+)+/g, ''))
+    .filter((row) => row && !days.includes(row));
   const chartsRows = charts
-      .filter((item) => /^title: { text|^series:/g.test(item.trim()))
-      .map((item) => item.trim().replace(/title: { text: |'|\\| },|series: | }],/g, ''))
-      .map((item) => item.includes('[{ name:') ? item.split('data: ')[1] : item);
+    .filter((item) => /^title: { text|^series:/g.test(item.trim()))
+    .map((item) => item.trim().replace(/title: { text: |'|\\| },|series: | }],/g, ''))
+    .map((item) => item.includes('[{ name:') ? item.split('data: ')[1] : item);
   return { tableRows, chartsRows };
 }
 
@@ -90,7 +92,7 @@ function fillArray(arrays, tableRows, itemsPerRow) {
 // eslint-disable-next-line require-jsdoc
 function convertArrayToObject(source, arrays) {
   return arrays.map((array) => {
-    const [col1, col2, col3, col4, col5, col6, col7] = array;
+    const [col1, col2, col3, col4, col5, col6, col7, col8, col9] = array;
     let parsed;
     switch (source) {
       case 'twitter':
@@ -120,6 +122,18 @@ function convertArrayToObject(source, arrays) {
           viewsDelta: +col4 || 0,
           views: +col5 || 0,
         };
+      case 'tiktok':
+        return {
+          date: getDate(col1),
+          followersDelta: +col2 || 0,
+          followers: +col3 || 0,
+          followingDelta: +col4 || 0,
+          following: +col5 || 0,
+          likesDelta: +col6 || 0,
+          likes: +col7 || 0,
+          postsDelta: +col8 || 0,
+          posts: +col9 || 0,
+        };
       case 'charts':
       default:
         parsed = JSON.parse(col2);
@@ -143,8 +157,8 @@ function getDate(str) {
 function generateId(str) {
   const splitted = str.split(/ for |\(/);
   return `${splitted[2] || ''.slice(0, -1)}${splitted[0]}`
-      .toLowerCase()
-      .replace(/\s|\)/g, '-');
+    .toLowerCase()
+    .replace(/\s|\)/g, '-');
 }
 
 /**
@@ -154,10 +168,10 @@ function generateId(str) {
  */
 function convertUnit(str) {
   const finalStr = str
-      .replace('LIVE', '')
-      .replace(/\./g, '')
-      .replace('K', '000')
-      .replace('M', '000000');
+    .replace('LIVE', '')
+    .replace(/\./g, '')
+    .replace('K', '000')
+    .replace('M', '000000');
   return str.includes('.') ? finalStr.slice(0, -1) : finalStr;
 }
 
