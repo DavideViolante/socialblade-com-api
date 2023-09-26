@@ -45,7 +45,7 @@ function getOutput(data, source) {
   // Charts for Twitter, Instagram, Youtube
   let charts = [];
   if (source !== 'facebook') {
-    charts = $('script').contents().get(4).data.split('\n');
+    charts = $('script').contents().get(5).data.split('\n');
   }
   return { table, charts };
 }

@@ -60,12 +60,13 @@ async function socialblade(source, username, cookie = '') {
     let chartsArrays = createArrayOfArrays(chartsRows.length / 2);
     chartsArrays = fillArray(chartsArrays, chartsRows, 2);
     const chartsArrayOfObjects = convertArrayToObject('charts', chartsArrays);
+    // console.log(tableArrayOfObjects, chartsArrayOfObjects);
     return { table: tableArrayOfObjects, charts: chartsArrayOfObjects };
   } catch (err) {
     console.log(err.message);
   }
 }
 
-// socialblade('instagram', 'barackobama', 'asd123')
+// socialblade('instagram', 'barackobama', 'asd123');
 
 exports.socialblade = socialblade;
