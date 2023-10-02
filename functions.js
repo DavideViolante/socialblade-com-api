@@ -21,7 +21,7 @@ function isValidSource(source) {
 function generateUrl(source, username) {
   const userUrlCriteria = {
     facebook: 'page',
-    youtube: 'channel',
+    youtube: 'c',
   };
   const userUrl = userUrlCriteria[source] || 'user';
   const urlSuffix = source === 'facebook' ? '' : '/monthly';

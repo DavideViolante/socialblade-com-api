@@ -29,6 +29,11 @@ async function callSocialblade(url, cookieValue = '') {
   };
   await page.setCookie(cookie);
   await page.goto(url);
+  // Youtube has some redirects, we need to go always monthly page
+  const currentUrl = page.url();
+  if (!currentUrl.includes('/monthly') && currentUrl.includes('youtube')) {
+    await page.goto(`${currentUrl}/monthly`);
+  }
   const content = await page.content();
   await browser.close();
   return content;
@@ -67,6 +72,6 @@ async function socialblade(source, username, cookie = '') {
   }
 }
 
-// socialblade('tiktok', 'selenagomez', 'asd123');
+// socialblade('youtube', 'selenagomez', 'asd123');
 
 exports.socialblade = socialblade;
