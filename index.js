@@ -15,7 +15,7 @@ const {
  * Get content from a Socialblade page
  * @param {string} url The URL of Socialblade page
  * @param {string} [cookieValue] Your Socialblade cookie, needed for Instagram
- * @return {string} Content of the page
+ * @return {Promise<string>} Content of the page
  */
 async function callSocialblade(url, cookieValue = '') {
   const browser = await puppeteer.launch({ headless: 'new' });
@@ -44,7 +44,7 @@ async function callSocialblade(url, cookieValue = '') {
  * @param {string} source The social source. Valid inputs: twitter, instagram, facebook, youtube
  * @param {string} username The social username
  * @param {string} [cookie] Your Socialblade cookie, needed for Instagram
- * @return {object} data from Socialblade
+ * @return {Promise<{table, charts}>} data from Socialblade
  */
 async function socialblade(source, username, cookie = '') {
   try {
